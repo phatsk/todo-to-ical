@@ -80,6 +80,7 @@
 		''
 	].join("\n");
 
+	var doevent = confirm('Select OK for regular calendar events or Cancel for TODO events');
 	var target_tpl = doevent ? target_tpl : todotpl;
 
 	if ( doevent ) {
@@ -94,7 +95,7 @@
 		}
 
 		var todo = {
-			uid: $el.attr('id').replace(/_/g, '-'),
+			uid: $el.attr('id').replace(/_/g, '-') + makeUID(),
 			due: $el.attr('data-due-datetime').replace(/-/g, '') + 'T170000',
 			url: 'https://basecamp.com' + $el.attr('data-url'),
 			seq: 2,
@@ -127,5 +128,17 @@
 		}
 
 		return tpl;
+	}
+
+	function makeUID( len ) {
+		len = len || 4;
+
+		var parts = [];
+
+		for ( var i = len; i--; ) {
+			parts.push( Math.random().toString(36).slice(2) );
+		}
+
+		return '-' + parts.join('-');
 	}
 })(jQuery);
