@@ -95,7 +95,7 @@
 		}
 
 		var todo = {
-			uid: $el.attr('id').replace(/_/g, '-') + makeUID(),
+			uid: makeUID( $el.attr('id').replace(/_/g, '-'), doevent ),
 			due: $el.attr('data-due-datetime').replace(/-/g, '') + 'T170000',
 			url: 'https://basecamp.com' + $el.attr('data-url'),
 			seq: 2,
@@ -130,15 +130,19 @@
 		return tpl;
 	}
 
-	function makeUID( len ) {
-		len = len || 4;
+	function makeUID( uid, dob64 ) {
 
-		var parts = [];
+		if ( dob64 ) {
+			return uid + '-' + btoa( uid );
+		}
 
-		for ( var i = len; i--; ) {
+		var parts = [ uid ];
+
+		for ( var i = 4; i--; ) {
 			parts.push( Math.random().toString(36).slice(2) );
 		}
 
-		return '-' + parts.join('-');
+		return parts.join('-');
+
 	}
 })(jQuery);
